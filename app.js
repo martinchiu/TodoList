@@ -69,6 +69,14 @@ app.set('view engine', 'hbs')
       .then(() => res.redirect(`/todos/${id}`))
       .catch(error => console.log(error))
   })
+  // 刪除特定todo
+  app.post('/todos/:id/delete', (req, res) => {
+    const id = req.params.id
+    return Todo.findById(id)
+      .then(todo => todo.remove())
+      .then(() => res.redirect('/'))
+      .catch(error => console.log(error))
+  })
 
 // 啟動伺服器
 app.listen(3000, () => {
