@@ -3,6 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 const Todo = require('./models/todo')
+const methodOverride = require('method-override')
 
 const app = express()
 // 資料庫連線
@@ -20,6 +21,8 @@ db.once('open', () => {
 })
 // 引入express 內建的body-parser
 app.use(express.urlencoded({ extended: true }))
+// 設定每一筆請求都會透過 methodOverride 進行前置處理
+app.use(methodOverride('_method'))
 // 設定模板引擎
 app.engine('hbs', exphbs.engine({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
@@ -59,7 +62,7 @@ app.get('/todos/:id/edit', (req, res) => {
     .then(todo => res.render('edit', { todo }))
     .catch(error => console.log(error))
 })
-app.post('/todos/:id/edit', (req, res) => {
+app.put('/todos/:id', (req, res) => {
   const id = req.params.id
   const { name, isDone } = req.body
 
@@ -73,7 +76,7 @@ app.post('/todos/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 // 刪除特定todo
-app.post('/todos/:id/delete', (req, res) => {
+app.delete('/todos/:id', (req, res) => {
   const id = req.params.id
   return Todo.findById(id)
     .then(todo => todo.remove())
