@@ -1,8 +1,8 @@
 <ul class="list-group">
   {{#each todos}}
   <li class="list-group-item">
-    <div class="row">
-      <div class="col-auto me-auto">
+    <div class="row d-flex justify-content-between">
+      <div class="col-auto ">
         <input type="checkbox" name="isDone" style="vertical-align: middle;" {{#if this.isDone}} checked {{/if}}
           disabled>
         <h4 style="display: inline; vertical-align: middle;">
